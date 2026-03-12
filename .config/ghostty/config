@@ -1,0 +1,4 @@
+custom-shader = /home/amandev/.config/ghostty/shaders/manga_slash.glsl
+background-opacity = 0.9
+background = #000000
+foreground = #39ff14
