@@ -82,6 +82,23 @@ sudo mkdir -p /etc/sddm.conf.d
 echo -e "[Theme]\nCurrent=sddm-astronaut-theme" | sudo tee /etc/sddm.conf.d/theme.conf
 echo "✅ SDDM Cyberpunk theme installed"
 
+# ── 8. Fix GPU/SDDM race condition (loads GPU drivers early in initramfs) ───
+echo "==> Applying GPU driver early-load fix for SDDM..."
+
+# Set GPU modules to load before anything else at boot
+# This prevents SDDM from crashing by grabbing the GPU before the driver is ready
+sudo sed -i 's/^MODULES=.*/MODULES=(amdgpu nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+
+# Enable nvidia DRM modesetting (required for Wayland + SDDM)
+sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia_drm.modeset=1 /' /etc/default/grub
+
+# Rebuild initramfs with new module config
+sudo mkinitcpio -P
+
+# Regenerate grub config with new kernel params
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+echo "✅ GPU early-load fix applied"
+
 # ── Done ───────────────────────────────────────────────────────────────────
 echo ""
 echo "╔══════════════════════════════════════╗"
