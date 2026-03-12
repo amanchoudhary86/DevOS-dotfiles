@@ -52,20 +52,39 @@ done
 echo "==> Enabling system services..."
 sudo systemctl enable sddm
 
-# ── 6. Set up GRUB theme hint ─────────────────────────────────────────────
+# ── 6. Install GRUB + CyberRe theme ───────────────────────────────────────
+echo "==> Installing GRUB and CyberRe theme..."
+sudo pacman -S --needed --noconfirm grub os-prober
+sudo grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+yay -S --noconfirm grub-theme-cyberre
+
+# Set CyberRe as the GRUB theme
+sudo sed -i 's|.*GRUB_THEME.*|GRUB_THEME="/usr/share/grub/themes/CyberRe/theme.txt"|' /etc/default/grub
+sudo sed -i 's|.*GRUB_TIMEOUT=.*|GRUB_TIMEOUT=10|' /etc/default/grub
+sudo sed -i 's|.*GRUB_DISABLE_OS_PROBER.*|GRUB_DISABLE_OS_PROBER=false|' /etc/default/grub
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+echo "✅ GRUB + CyberRe theme installed"
+
+# ── 7. Install SDDM Cyberpunk theme ───────────────────────────────────────
+echo "==> Installing SDDM Cyberpunk theme..."
+sudo pacman -S --needed --noconfirm qt6-svg qt6-virtualkeyboard qt6-multimedia \
+    gst-plugins-good gst-plugins-bad gst-libav
+
+git clone https://github.com/Keyitdev/sddm-astronaut-theme.git /tmp/sddm-astronaut-theme
+sudo cp -r /tmp/sddm-astronaut-theme /usr/share/sddm/themes/sddm-astronaut-theme
+
+# Apply cyberpunk sub-theme
+sudo cp /tmp/sddm-astronaut-theme/Themes/cyberpunk.conf \
+        /usr/share/sddm/themes/sddm-astronaut-theme/theme.conf
+
+# Set SDDM to use it
+sudo mkdir -p /etc/sddm.conf.d
+echo -e "[Theme]\nCurrent=sddm-astronaut-theme" | sudo tee /etc/sddm.conf.d/theme.conf
+echo "✅ SDDM Cyberpunk theme installed"
+
+# ── Done ───────────────────────────────────────────────────────────────────
 echo ""
-echo "══════════════════════════════════════════"
-echo "  ✅ DevOS setup complete!"
-echo ""
-echo "  Manual steps remaining:"
-echo "  1. Install CyberRe GRUB theme:"
-echo "     yay -S grub-theme-cyberre"
-echo "     sudo sed -i 's|.*GRUB_THEME.*|GRUB_THEME=\"/usr/share/grub/themes/CyberRe/theme.txt\"|' /etc/default/grub"
-echo "     sudo grub-mkconfig -o /boot/grub/grub.cfg"
-echo ""
-echo "  2. Install SDDM Cyberpunk theme:"
-echo "     git clone https://github.com/Keyitdev/sddm-astronaut-theme.git /tmp/sddm-theme"
-echo "     cd /tmp/sddm-theme && sudo bash setup.sh"
-echo ""
-echo "  Then reboot: sudo reboot"
-echo "══════════════════════════════════════════"
+echo "╔══════════════════════════════════════╗"
+echo "║      ✅ DevOS Setup Complete!        ║"
+echo "║        Run: sudo reboot              ║"
+echo "╚══════════════════════════════════════╝"
