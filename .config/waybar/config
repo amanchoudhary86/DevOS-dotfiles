@@ -1,0 +1,59 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 34,
+  "spacing": 8,
+
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["wlr/taskbar"],
+  "modules-right": ["custom/minimized", "pulseaudio", "network", "clock", "tray"],
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "active-only": false,
+    "format-icons": {
+      "active": "",
+      "default": ""
+    }
+  },
+
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 16,
+    "on-click": "activate",
+    "on-click-middle": "close",
+    "tooltip-format": "{title}",
+    "ignore-list": ["waybar"]
+  },
+
+  "custom/minimized": {
+    "exec": "~/.config/waybar/scripts/minimized.sh",
+    "return-type": "json",
+    "interval": 2,
+    "on-click": "hyprctl dispatch togglespecialworkspace minimized",
+    "on-click-right": "hyprctl dispatch movetoworkspacesilent special:minimized",
+    "tooltip": true
+  },
+
+  "pulseaudio": {
+    "format": " {volume}%",
+    "format-muted": " muted",
+    "on-click": "pavucontrol"
+  },
+
+  "network": {
+    "format-wifi": "  {essid}",
+    "format-ethernet": "󰈀 wired",
+    "format-disconnected": "󰖪 offline"
+  },
+
+  "clock": {
+    "format": " {:%a %d %b  %I:%M %p}"
+  },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 8
+  }
+}

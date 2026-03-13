@@ -1,0 +1,57 @@
+* {
+  border: none;
+  border-radius: 0;
+  font-family: JetBrainsMono Nerd Font, monospace;
+  font-size: 13px;
+  min-height: 0;
+}
+
+window#waybar {
+  background: rgba(16, 20, 28, 0.92);
+  color: #e6edf3;
+  border-bottom: 1px solid rgba(120, 186, 255, 0.35);
+}
+
+#workspaces {
+  margin: 6px 8px;
+}
+
+#workspaces button {
+  padding: 0 8px;
+  color: #9fb3c8;
+}
+
+#workspaces button.active {
+  color: #78baff;
+}
+
+#taskbar {
+  margin: 6px 10px;
+}
+
+#taskbar button {
+  margin: 0 4px;
+  padding: 0 8px;
+  background: rgba(45, 57, 74, 0.55);
+  border-radius: 6px;
+}
+
+#taskbar button.active {
+  background: rgba(120, 186, 255, 0.25);
+}
+
+#custom-minimized,
+#pulseaudio,
+#network,
+#clock,
+#tray {
+  margin: 6px 8px;
+  padding: 0 10px;
+  background: rgba(35, 44, 58, 0.55);
+  border-radius: 7px;
+}
+
+#custom-minimized.has-items {
+  color: #ffd166;
+  border: 1px solid rgba(255, 209, 102, 0.45);
+}
