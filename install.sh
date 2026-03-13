@@ -52,6 +52,14 @@ done
 echo "==> Enabling system services..."
 sudo systemctl enable sddm
 
+# ── 6. Install mpvpaper + create Wallpapers directory ─────────────────────
+echo "==> Setting up video wallpapers (mpvpaper)..."
+yay -S --needed --noconfirm mpvpaper
+mkdir -p ~/Wallpapers
+echo "✅ Wallpapers directory created at ~/Wallpapers"
+echo "   Drop your .mp4 or .webm files there, then:"
+echo "   ln -sf ~/Wallpapers/your_wallpaper.mp4 ~/Wallpapers/active_wallpaper"
+
 # ── 6. Install GRUB + CyberRe theme ───────────────────────────────────────
 echo "==> Installing GRUB and CyberRe theme..."
 sudo pacman -S --needed --noconfirm grub os-prober
